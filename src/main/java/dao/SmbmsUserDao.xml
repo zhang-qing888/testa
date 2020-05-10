@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SmbmsUserDao">
+
+    <resultMap type="entity.SmbmsUser" id="SmbmsUserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="usercode" column="userCode" jdbcType="VARCHAR"/>
+        <result property="username" column="userName" jdbcType="VARCHAR"/>
+        <result property="userpassword" column="userPassword" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="INTEGER"/>
+        <result property="birthday" column="birthday" jdbcType="OTHER"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="userrole" column="userRole" jdbcType="INTEGER"/>
+        <result property="createdby" column="createdBy" jdbcType="INTEGER"/>
+        <result property="creationdate" column="creationDate" jdbcType="TIMESTAMP"/>
+        <result property="modifyby" column="modifyBy" jdbcType="INTEGER"/>
+        <result property="modifydate" column="modifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SmbmsUserMap">
+        select
+          id, userCode, userName, userPassword, gender, birthday, phone, address, userRole, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_user
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SmbmsUserMap">
+        select
+          id, userCode, userName, userPassword, gender, birthday, phone, address, userRole, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SmbmsUserMap">
+        select
+          id, userCode, userName, userPassword, gender, birthday, phone, address, userRole, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="usercode != null and usercode != ''">
+                and userCode = #{usercode}
+            </if>
+            <if test="username != null and username != ''">
+                and userName = #{username}
+            </if>
+            <if test="userpassword != null and userpassword != ''">
+                and userPassword = #{userpassword}
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="birthday != null">
+                and birthday = #{birthday}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="userrole != null">
+                and userRole = #{userrole}
+            </if>
+            <if test="createdby != null">
+                and createdBy = #{createdby}
+            </if>
+            <if test="creationdate != null">
+                and creationDate = #{creationdate}
+            </if>
+            <if test="modifyby != null">
+                and modifyBy = #{modifyby}
+            </if>
+            <if test="modifydate != null">
+                and modifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into smbms.smbms_user(userCode, userName, userPassword, gender, birthday, phone, address, userRole, createdBy, creationDate, modifyBy, modifyDate)
+        values (#{usercode}, #{username}, #{userpassword}, #{gender}, #{birthday}, #{phone}, #{address}, #{userrole}, #{createdby}, #{creationdate}, #{modifyby}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update smbms.smbms_user
+        <set>
+            <if test="usercode != null and usercode != ''">
+                userCode = #{usercode},
+            </if>
+            <if test="username != null and username != ''">
+                userName = #{username},
+            </if>
+            <if test="userpassword != null and userpassword != ''">
+                userPassword = #{userpassword},
+            </if>
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="userrole != null">
+                userRole = #{userrole},
+            </if>
+            <if test="createdby != null">
+                createdBy = #{createdby},
+            </if>
+            <if test="creationdate != null">
+                creationDate = #{creationdate},
+            </if>
+            <if test="modifyby != null">
+                modifyBy = #{modifyby},
+            </if>
+            <if test="modifydate != null">
+                modifyDate = #{modifydate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from smbms.smbms_user where id = #{id}
+    </delete>
+    <resultMap id="SmbmsUserMap1" type="entity.SmbmsUser">
+        <result property="id" column="id"/>
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="usercode" column="userCode" jdbcType="VARCHAR"/>
+        <result property="username" column="userName" jdbcType="VARCHAR"/>
+        <result property="userpassword" column="userPassword" jdbcType="VARCHAR"/>
+
+    </resultMap>
+   <!--查询登录用户-->
+    <select id="selectuser" parameterType="string" resultMap="SmbmsUserMap1">
+        select userCode,userName,userPassword from smbms_user
+        where userCode=#{userCode} and userPassword=#{userPassword}
+
+    </select>
+</mapper>

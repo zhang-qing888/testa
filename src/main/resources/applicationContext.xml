@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       https://www.springframework.org/schema/aop/spring-aop.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+    <!--导入dao层的spring配置文件-->
+    <import resource="classpath:applicationContext-dao.xml"/>
+    <!--启用注解扫描-->
+    <context:component-scan base-package="impl"/>
+    <!--创建事务管理器-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/> </bean>
+    <!--事务增强处理-->
+    <tx:advice id="interceptor" transaction-manager="txManager">
+        <tx:attributes>
+            <!--给*所有方法加上事务-->
+            <tx:method name="*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <!--配置切面给需要事务的方法连接上事务增强-->
+    <aop:config>
+        <aop:pointcut id="transaction" expression="execution(* impl..*.*(..))"/>
+        <aop:advisor advice-ref="interceptor" pointcut-ref="transaction"/>
+    </aop:config>
+    <!--声明增强类bean-->
+    <bean id="aopvdvice" class="aop.aopAdvice"/>
+    <aop:config >
+        <!--定义切入点-->
+        <aop:pointcut id="advice" expression="execution(* impl..*.*(..))"/>
+        <!--织入增强处理-->
+       <aop:aspect ref="aopvdvice">
+           <!--前置增强，并引入切入点-->
+           <aop:before method="before" pointcut-ref="advice"/>
+           <!--后置增强注入返回值，并引入切入点-->
+           <aop:after-returning method="afterRetuning"
+                                pointcut-ref="advice" returning="result"/>
+           <!--异常增强，并引入切入点-->
+           <aop:after-throwing method="throwingException" pointcut-ref="advice" throwing="e" />
+           <!--最终增强,并引入切入点-->
+           <aop:after method="after" pointcut-ref="advice"/>
+           <!--环绕增强增强,并引入切入点-->
+           <aop:around method="around" pointcut-ref="advice" />
+       </aop:aspect>
+    </aop:config>
+   <!-- &lt;!&ndash;事务管理器&ndash;&gt;
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    &lt;!&ndash;事务注解驱动&ndash;&gt;
+    <tx:annotation-driven  proxy-target-class="true"/>-->
+</beans>

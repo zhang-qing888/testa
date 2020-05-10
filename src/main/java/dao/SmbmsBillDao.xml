@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SmbmsBillDao">
+
+    <resultMap type="entity.SmbmsBill" id="SmbmsBillMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="billcode" column="billCode" jdbcType="VARCHAR"/>
+        <result property="productname" column="productName" jdbcType="VARCHAR"/>
+        <result property="productdesc" column="productDesc" jdbcType="VARCHAR"/>
+        <result property="productunit" column="productUnit" jdbcType="VARCHAR"/>
+        <result property="productcount" column="productCount" jdbcType="NUMERIC"/>
+        <result property="totalprice" column="totalPrice" jdbcType="NUMERIC"/>
+        <result property="ispayment" column="isPayment" jdbcType="INTEGER"/>
+        <result property="createdby" column="createdBy" jdbcType="INTEGER"/>
+        <result property="creationdate" column="creationDate" jdbcType="TIMESTAMP"/>
+        <result property="modifyby" column="modifyBy" jdbcType="INTEGER"/>
+        <result property="modifydate" column="modifyDate" jdbcType="TIMESTAMP"/>
+        <result property="providerid" column="providerId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SmbmsBillMap">
+        select
+          id, billCode, productName, productDesc, productUnit, productCount, totalPrice, isPayment, createdBy, creationDate, modifyBy, modifyDate, providerId
+        from smbms.smbms_bill
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SmbmsBillMap">
+        select
+          id, billCode, productName, productDesc, productUnit, productCount, totalPrice, isPayment, createdBy, creationDate, modifyBy, modifyDate, providerId
+        from smbms.smbms_bill
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SmbmsBillMap">
+        select
+          id, billCode, productName, productDesc, productUnit, productCount, totalPrice, isPayment, createdBy, creationDate, modifyBy, modifyDate, providerId
+        from smbms.smbms_bill
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="billcode != null and billcode != ''">
+                and billCode = #{billcode}
+            </if>
+            <if test="productname != null and productname != ''">
+                and productName = #{productname}
+            </if>
+            <if test="productdesc != null and productdesc != ''">
+                and productDesc = #{productdesc}
+            </if>
+            <if test="productunit != null and productunit != ''">
+                and productUnit = #{productunit}
+            </if>
+            <if test="productcount != null">
+                and productCount = #{productcount}
+            </if>
+            <if test="totalprice != null">
+                and totalPrice = #{totalprice}
+            </if>
+            <if test="ispayment != null">
+                and isPayment = #{ispayment}
+            </if>
+            <if test="createdby != null">
+                and createdBy = #{createdby}
+            </if>
+            <if test="creationdate != null">
+                and creationDate = #{creationdate}
+            </if>
+            <if test="modifyby != null">
+                and modifyBy = #{modifyby}
+            </if>
+            <if test="modifydate != null">
+                and modifyDate = #{modifydate}
+            </if>
+            <if test="providerid != null">
+                and providerId = #{providerid}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into smbms.smbms_bill(billCode, productName, productDesc, productUnit, productCount, totalPrice, isPayment, createdBy, creationDate, modifyBy, modifyDate, providerId)
+        values (#{billcode}, #{productname}, #{productdesc}, #{productunit}, #{productcount}, #{totalprice}, #{ispayment}, #{createdby}, #{creationdate}, #{modifyby}, #{modifydate}, #{providerid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update smbms.smbms_bill
+        <set>
+            <if test="billcode != null and billcode != ''">
+                billCode = #{billcode},
+            </if>
+            <if test="productname != null and productname != ''">
+                productName = #{productname},
+            </if>
+            <if test="productdesc != null and productdesc != ''">
+                productDesc = #{productdesc},
+            </if>
+            <if test="productunit != null and productunit != ''">
+                productUnit = #{productunit},
+            </if>
+            <if test="productcount != null">
+                productCount = #{productcount},
+            </if>
+            <if test="totalprice != null">
+                totalPrice = #{totalprice},
+            </if>
+            <if test="ispayment != null">
+                isPayment = #{ispayment},
+            </if>
+            <if test="createdby != null">
+                createdBy = #{createdby},
+            </if>
+            <if test="creationdate != null">
+                creationDate = #{creationdate},
+            </if>
+            <if test="modifyby != null">
+                modifyBy = #{modifyby},
+            </if>
+            <if test="modifydate != null">
+                modifyDate = #{modifydate},
+            </if>
+            <if test="providerid != null">
+                providerId = #{providerid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from smbms.smbms_bill where id = #{id}
+    </delete>
+
+</mapper>

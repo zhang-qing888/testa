@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SmbmsRoleDao">
+
+    <resultMap type="entity.SmbmsRole" id="SmbmsRoleMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="rolecode" column="roleCode" jdbcType="VARCHAR"/>
+        <result property="rolename" column="roleName" jdbcType="VARCHAR"/>
+        <result property="createdby" column="createdBy" jdbcType="INTEGER"/>
+        <result property="creationdate" column="creationDate" jdbcType="TIMESTAMP"/>
+        <result property="modifyby" column="modifyBy" jdbcType="INTEGER"/>
+        <result property="modifydate" column="modifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SmbmsRoleMap">
+        select
+          id, roleCode, roleName, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_role
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SmbmsRoleMap">
+        select
+          id, roleCode, roleName, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_role
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SmbmsRoleMap">
+        select
+          id, roleCode, roleName, createdBy, creationDate, modifyBy, modifyDate
+        from smbms.smbms_role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="rolecode != null and rolecode != ''">
+                and roleCode = #{rolecode}
+            </if>
+            <if test="rolename != null and rolename != ''">
+                and roleName = #{rolename}
+            </if>
+            <if test="createdby != null">
+                and createdBy = #{createdby}
+            </if>
+            <if test="creationdate != null">
+                and creationDate = #{creationdate}
+            </if>
+            <if test="modifyby != null">
+                and modifyBy = #{modifyby}
+            </if>
+            <if test="modifydate != null">
+                and modifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into smbms.smbms_role(roleCode, roleName, createdBy, creationDate, modifyBy, modifyDate)
+        values (#{rolecode}, #{rolename}, #{createdby}, #{creationdate}, #{modifyby}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update smbms.smbms_role
+        <set>
+            <if test="rolecode != null and rolecode != ''">
+                roleCode = #{rolecode},
+            </if>
+            <if test="rolename != null and rolename != ''">
+                roleName = #{rolename},
+            </if>
+            <if test="createdby != null">
+                createdBy = #{createdby},
+            </if>
+            <if test="creationdate != null">
+                creationDate = #{creationdate},
+            </if>
+            <if test="modifyby != null">
+                modifyBy = #{modifyby},
+            </if>
+            <if test="modifydate != null">
+                modifyDate = #{modifydate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from smbms.smbms_role where id = #{id}
+    </delete>
+
+</mapper>

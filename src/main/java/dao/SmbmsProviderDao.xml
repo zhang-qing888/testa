@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.SmbmsProviderDao">
+
+    <resultMap type="entity.SmbmsProvider" id="SmbmsProviderMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="procode" column="proCode" jdbcType="VARCHAR"/>
+        <result property="proname" column="proName" jdbcType="VARCHAR"/>
+        <result property="prodesc" column="proDesc" jdbcType="VARCHAR"/>
+        <result property="procontact" column="proContact" jdbcType="VARCHAR"/>
+        <result property="prophone" column="proPhone" jdbcType="VARCHAR"/>
+        <result property="proaddress" column="proAddress" jdbcType="VARCHAR"/>
+        <result property="profax" column="proFax" jdbcType="VARCHAR"/>
+        <result property="createdby" column="createdBy" jdbcType="INTEGER"/>
+        <result property="creationdate" column="creationDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="modifyDate" jdbcType="TIMESTAMP"/>
+        <result property="modifyby" column="modifyBy" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="SmbmsProviderMap">
+        select
+          id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, creationDate, modifyDate, modifyBy
+        from smbms.smbms_provider
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="SmbmsProviderMap">
+        select
+          id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, creationDate, modifyDate, modifyBy
+        from smbms.smbms_provider
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="SmbmsProviderMap">
+        select
+          id, proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, creationDate, modifyDate, modifyBy
+        from smbms.smbms_provider
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="procode != null and procode != ''">
+                and proCode = #{procode}
+            </if>
+            <if test="proname != null and proname != ''">
+                and proName = #{proname}
+            </if>
+            <if test="prodesc != null and prodesc != ''">
+                and proDesc = #{prodesc}
+            </if>
+            <if test="procontact != null and procontact != ''">
+                and proContact = #{procontact}
+            </if>
+            <if test="prophone != null and prophone != ''">
+                and proPhone = #{prophone}
+            </if>
+            <if test="proaddress != null and proaddress != ''">
+                and proAddress = #{proaddress}
+            </if>
+            <if test="profax != null and profax != ''">
+                and proFax = #{profax}
+            </if>
+            <if test="createdby != null">
+                and createdBy = #{createdby}
+            </if>
+            <if test="creationdate != null">
+                and creationDate = #{creationdate}
+            </if>
+            <if test="modifydate != null">
+                and modifyDate = #{modifydate}
+            </if>
+            <if test="modifyby != null">
+                and modifyBy = #{modifyby}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into smbms.smbms_provider(proCode, proName, proDesc, proContact, proPhone, proAddress, proFax, createdBy, creationDate, modifyDate, modifyBy)
+        values (#{procode}, #{proname}, #{prodesc}, #{procontact}, #{prophone}, #{proaddress}, #{profax}, #{createdby}, #{creationdate}, #{modifydate}, #{modifyby})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update smbms.smbms_provider
+        <set>
+            <if test="procode != null and procode != ''">
+                proCode = #{procode},
+            </if>
+            <if test="proname != null and proname != ''">
+                proName = #{proname},
+            </if>
+            <if test="prodesc != null and prodesc != ''">
+                proDesc = #{prodesc},
+            </if>
+            <if test="procontact != null and procontact != ''">
+                proContact = #{procontact},
+            </if>
+            <if test="prophone != null and prophone != ''">
+                proPhone = #{prophone},
+            </if>
+            <if test="proaddress != null and proaddress != ''">
+                proAddress = #{proaddress},
+            </if>
+            <if test="profax != null and profax != ''">
+                proFax = #{profax},
+            </if>
+            <if test="createdby != null">
+                createdBy = #{createdby},
+            </if>
+            <if test="creationdate != null">
+                creationDate = #{creationdate},
+            </if>
+            <if test="modifydate != null">
+                modifyDate = #{modifydate},
+            </if>
+            <if test="modifyby != null">
+                modifyBy = #{modifyby},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from smbms.smbms_provider where id = #{id}
+    </delete>
+
+</mapper>
